@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>คำนวณขนาดยา Warfarin</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('Service worker registered.', reg));
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>คำนวณขนาดยา Warfarin</h1>
+    <label>ค่า INR ล่าสุด:
+      <input type="number" id="inr" step="0.1" required />
+    </label>
+    <label>ขนาดยาเฉลี่ยต่อสัปดาห์ (mg):
+      <input type="number" id="weeklyDose" step="0.1" required />
+    </label>
+    <label>มีเลือดออกหรือไม่:
+      <select id="bleeding">
+        <option value="no">ไม่มี</option>
+        <option value="yes">มี</option>
+      </select>
+    </label>
+    <button >คำนวณ</button>
+    <div id="result"></div>
+  </div>
+  <script src="script.js" defer></script>
+</body>
+</html>
