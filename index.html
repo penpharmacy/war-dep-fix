@@ -3,47 +3,66 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Warfarin Dose Calculator (PMK Style)</title>
-<link rel="stylesheet" href="style.css" />
+<title>เครื่องคำนวณการให้ยา Warfarin PPH</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
 <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#0b4971" />
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<header>
+  <h1>เครื่องคำนวณการให้ยา Warfarin PPH</h1>
+</header>
 
-<h1>Warfarin Dose Calculator (PMK Style)</h1>
+<main>
+  <section class="input-section">
+    <form id="warfarinForm" onsubmit="return false;">
+      <label>INR ปัจจุบัน:
+        <input type="number" id="currentINR" step="0.01" min="0" required />
+      </label>
+      <label>ขนาดยาเดิมต่อสัปดาห์ (มก.):
+        <input type="number" id="weeklyDose" step="0.1" min="0" required />
+      </label>
+      <label>จำนวนวันนัด:
+        <input type="number" id="days" step="1" min="1" required />
+      </label>
 
-<form id="warfarinForm" onsubmit="return false;">
-  <label for="weeklyDose">ขนาดยา Warfarin ที่รับประทานต่อสัปดาห์ (mg):</label>
-  <input type="number" id="weeklyDose" min="1" step="0.1" required />
+      <fieldset class="tablet-choice">
+        <legend>ขนาดเม็ดยาที่ใช้:</legend>
+        <label><input type="radio" name="tablet" value="3" required /> ใช้เม็ด 3 mg เท่านั้น</label>
+        <label><input type="radio" name="tablet" value="2" /> ใช้เม็ด 2 mg เท่านั้น</label>
+        <label><input type="radio" name="tablet" value="2+3" /> ใช้เม็ด 2+3 mg เท่านั้น</label>
+        <label><input type="radio" name="tablet" value="both" /> ใช้ทั้ง 2 mg และ 3 mg</label>
+      </fieldset>
 
-  <label for="currentINR">ค่า INR ปัจจุบัน:</label>
-  <input type="number" id="currentINR" min="0" step="0.01" required />
+      <fieldset class="bleeding-status">
+        <legend>ภาวะเลือดออก:</legend>
+        <label><input type="radio" name="bleeding" value="no" checked /> ไม่มี</label>
+        <label><input type="radio" name="bleeding" value="yes" /> มี</label>
+      </fieldset>
 
-  <label for="days">จำนวนวันนัด (วัน):</label>
-  <input type="number" id="days" min="1" step="1" required />
+      <button id="calculateBtn" type="submit">คำนวณขนาดยาใหม่</button>
+    </form>
+  </section>
 
-  <label>ขนาดเม็ดยา Warfarin ที่เลือก:</label>
-  <select id="tabletChoice">
-    <option value="2">2 mg</option>
-    <option value="3">3 mg</option>
-    <option value="5">5 mg (3+2 mg)</option>
-    <option value="both">ทั้ง 2 mg และ 3 mg</option>
-  </select>
+  <section class="result-section" id="resultSection" style="display:none;">
+    <h2>ผลลัพธ์การคำนวณ</h2>
+    <div id="recommendation" class="recommendation"></div>
+    <div id="doseRange" class="dose-range"></div>
+    <div id="planLow" class="plan"></div>
+    <div id="planHigh" class="plan"></div>
+    <div id="totalTablets" class="total-tablets"></div>
+  </section>
+</main>
 
-  <button onclick="calculateWarfarinDose()">คำนวณ</button>
-</form>
-
-<div id="result" class="result" style="display:none;"></div>
-<div id="warning" class="warning" style="display:none;"></div>
+<footer>
+  <a href="#" target="_blank">เกี่ยวกับเรา</a> | <a href="#" target="_blank">คู่มือการใช้งาน</a>
+</footer>
 
 <script src="script.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').then(() => {
-      console.log('Service Worker registered');
-    });
+    navigator.serviceWorker.register('sw.js');
   }
 </script>
-
 </body>
 </html>
