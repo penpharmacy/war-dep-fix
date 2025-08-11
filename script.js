@@ -1,91 +1,108 @@
-function calculate(){
-  const inr = parseFloat(document.getElementById('inr').value);
+function calculateWarfarinDose() {
   const weeklyDose = parseFloat(document.getElementById('weeklyDose').value);
+  const INR = parseFloat(document.getElementById('currentINR').value);
   const days = parseInt(document.getElementById('days').value);
-  const tabletOption = document.querySelector('input[name="tablet"]:checked').value;
-  const bleed = document.querySelector('input[name="bleed"]:checked').value;
+  const tabletChoice = document.getElementById('tabletChoice').value;
 
-  if (isNaN(inr) || isNaN(weeklyDose) || isNaN(days)) {
-    alert("กรุณากรอกข้อมูลให้ครบ");
+  if(isNaN(weeklyDose) || weeklyDose <= 0 || isNaN(INR) || INR <= 0 || isNaN(days) || days <= 0) {
+    alert('กรุณากรอกข้อมูลให้ถูกต้องครบถ้วน');
     return;
   }
 
-  const doseRange = getDoseRange(inr, weeklyDose, bleed);
-  const minDose = doseRange.min;
-  const maxDose = doseRange.max;
-  const avgDose = (minDose + maxDose) / 2;
+  let adjustPercent = 0;
+  let advice = '';
 
-  document.getElementById('newDoseText').innerText =
-    `${minDose.toFixed(1)} - ${maxDose.toFixed(1)} (เฉลี่ย ${avgDose.toFixed(1)})`;
-  document.getElementById('advice').innerText = doseRange.advice;
-
-  const planMin = generate7DayPlan(minDose, tabletOption);
-  const planAvg = generate7DayPlan(avgDose, tabletOption);
-  const planMax = generate7DayPlan(maxDose, tabletOption);
-
-  renderPlanTable(planMin, document.querySelector('#planMin tbody'));
-  renderPlanTable(planAvg, document.querySelector('#planAvg tbody'));
-  renderPlanTable(planMax, document.querySelector('#planMax tbody'));
-
-  const supplyMin = makeSupplySummary(planMin, days);
-  const supplyAvg = makeSupplySummary(planAvg, days);
-  const supplyMax = makeSupplySummary(planMax, days);
-
-  document.getElementById('supplySummary').innerHTML =
-    `<strong>ต่ำสุด:</strong> ${supplyMin}<br>
-     <strong>เฉลี่ย:</strong> ${supplyAvg}<br>
-     <strong>สูงสุด:</strong> ${supplyMax}`;
-
-  document.getElementById('results').style.display = 'block';
-}
-
-function getDoseRange(inr, weeklyDose, bleed){
-  if (bleed === 'yes') {
-    return { min: 0, max: 0, advice: "หยุดยาและรีบพบแพทย์" };
+  if(INR < 1.5) {
+    adjustPercent = 0.15;
+    advice = 'เพิ่มขนาดยารายสัปดาห์ 10–20%';
+  } else if(INR >= 1.5 && INR <= 1.9) {
+    adjustPercent = 0.075;
+    advice = 'เพิ่ม 5–10% หรือไม่ต้องปรับ แต่ติดตามค่า INR บ่อยขึ้น';
+  } else if(INR >= 2.0 && INR <= 3.0) {
+    adjustPercent = 0;
+    advice = 'ไม่ต้องปรับยา';
+  } else if(INR >= 3.1 && INR <= 3.9) {
+    adjustPercent = -0.075;
+    advice = 'ลดขนาดยารายสัปดาห์ 5–10%';
+  } else if(INR > 3.9 && INR <= 5.0) {
+    adjustPercent = -0.10;
+    advice = 'หยุดยา 1 วัน แล้วกลับมาเริ่มด้วยขนาดที่ลดลง 10% (ไม่มีเลือดออก)';
+  } else if(INR > 5.0 && INR <= 9.0) {
+    adjustPercent = -0.20;
+    advice = 'หยุดยา 2 วัน แล้วกลับมาเริ่มด้วยขนาดที่ลดลง 20%, พิจารณาให้ Vitamin K1 1–2.5 mg (ไม่มีเลือดออก)';
+  } else if(INR > 9.0) {
+    adjustPercent = 0;
+    advice = 'หยุดยา ให้ Vitamin K1 2.5–5 mg รับประทาน และติดตาม INR อย่างใกล้ชิด (ไม่มีเลือดออก)';
   }
-  let factor;
-  if (inr < 2) factor = 1.1;
-  else if (inr <= 3) factor = 1;
-  else if (inr <= 4) factor = 0.9;
-  else factor = 0.8;
 
-  const min = weeklyDose * factor * 0.95;
-  const max = weeklyDose * factor * 1.05;
-  return { min, max, advice: "ปรับขนาดยาตามช่วงที่แนะนำ" };
-}
-
-function generate7DayPlan(weeklyDose, tabletOption){
-  const daily = weeklyDose / 7;
-  const plan = [];
-  for (let i=0; i<7; i++){
-    const tab3 = Math.floor(daily / 3);
-    const remainder = daily - tab3 * 3;
-    const tab2 = Math.round(remainder / 2);
-    plan.push({ day: i+1, tab3, tab2, total: tab3*3 + tab2*2 });
+  let newWeeklyDose = weeklyDose;
+  if(INR <= 9.0) {
+    newWeeklyDose = weeklyDose * (1 + adjustPercent);
+    newWeeklyDose = Math.max(newWeeklyDose, 0);
+  } else {
+    newWeeklyDose = 0;
   }
-  return plan;
-}
 
-function renderPlanTable(plan, tbody){
-  tbody.innerHTML = '';
-  plan.forEach(row => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${row.day}</td>
-                    <td>${row.tab3}</td>
-                    <td>${row.tab2}</td>
-                    <td>${row.total.toFixed(1)}</td>`;
-    tbody.appendChild(tr);
-  });
-}
+  let dailyDose = newWeeklyDose / days;
 
-function makeSupplySummary(plan, days){
-  const weeks = days / 7;
-  let total3 = 0, total2 = 0;
-  plan.forEach(row => {
-    total3 += row.tab3;
-    total2 += row.tab2;
-  });
-  total3 *= weeks;
-  total2 *= weeks;
-  return `${total3} เม็ด (3mg), ${total2} เม็ด (2mg)`;
+  let dailyTablets = [];
+  if (tabletChoice === '2') {
+    dailyTablets = Array(days).fill(dailyDose / 2);
+  } else if (tabletChoice === '3') {
+    dailyTablets = Array(days).fill(dailyDose / 3);
+  } else if (tabletChoice === '5') {
+    dailyTablets = Array(days).fill(dailyDose / 5);
+  } else if (tabletChoice === 'both') {
+    dailyTablets = [];
+    for(let i=0; i<days; i++) {
+      if(i%2 === 0) {
+        dailyTablets.push(dailyDose / 3);
+      } else {
+        dailyTablets.push(dailyDose / 2);
+      }
+    }
+  }
+
+  function formatTablets(doseMg, tabletMg) {
+    const tablets = doseMg / tabletMg;
+    const rounded = Math.round(tablets * 4) / 4;
+    return rounded;
+  }
+
+  let dailyTabletsRounded = [];
+  if (tabletChoice === 'both') {
+    for(let i=0; i<days; i++) {
+      const tabletMg = (i%2 === 0) ? 3 : 2;
+      dailyTabletsRounded.push(formatTablets(dailyDose, tabletMg));
+    }
+  } else {
+    const tabletMg = tabletChoice === '5' ? 5 : Number(tabletChoice);
+    for(let i=0; i<days; i++) {
+      dailyTabletsRounded.push(formatTablets(dailyDose, tabletMg));
+    }
+  }
+
+  let resultText = `<h3>ผลการคำนวณ</h3>`;
+  resultText += `<p>ค่า INR ปัจจุบัน: <b>${INR.toFixed(2)}</b></p>`;
+  resultText += `<p>ขนาดยาเดิมรายสัปดาห์: <b>${weeklyDose.toFixed(2)} mg</b></p>`;
+  if (newWeeklyDose === 0) {
+    resultText += `<p><b>หยุดยา Warfarin ตามคำแนะนำ</b></p>`;
+  } else {
+    resultText += `<p>ขนาดยาใหม่รายสัปดาห์: <b>${newWeeklyDose.toFixed(2)} mg</b></p>`;
+    resultText += `<p>ขนาดยาเฉลี่ยรายวัน: <b>${dailyDose.toFixed(2)} mg/วัน</b></p>`;
+  }
+
+  resultText += `<h4>คำแนะนำ</h4><p>${advice}</p>`;
+
+  if(newWeeklyDose > 0){
+    resultText += `<h4>จำนวนเม็ดที่แนะนำต่อวัน (ปัดเศษ 0.25 เม็ด)</h4>`;
+    for(let i=0; i<days; i++){
+      let tabletMg = tabletChoice === '5' ? 5 : (tabletChoice === 'both' ? (i%2 === 0 ? 3 : 2) : Number(tabletChoice));
+      resultText += `<p>วัน${i+1}: ${dailyTabletsRounded[i]} เม็ดขนาด ${tabletMg} mg</p>`;
+    }
+  }
+
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').innerHTML = resultText;
+  document.getElementById('warning').style.display = 'none';
 }

@@ -1,79 +1,49 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Warfarin Calculator PPH</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Warfarin Dose Calculator (PMK Style)</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0b4971" />
 </head>
 <body>
-<div class="container">
-  <div class="column">
-    <h1>Warfarin Calculator</h1>
 
-    <label>ค่า INR:</label>
-    <input type="number" id="inr" step="0.1">
+<h1>Warfarin Dose Calculator (PMK Style)</h1>
 
-    <label>ขนาดยารวมต่อสัปดาห์ (mg):</label>
-    <input type="number" id="weeklyDose" step="0.1">
+<form id="warfarinForm" onsubmit="return false;">
+  <label for="weeklyDose">ขนาดยา Warfarin ที่รับประทานต่อสัปดาห์ (mg):</label>
+  <input type="number" id="weeklyDose" min="1" step="0.1" required />
 
-    <label>จำนวนวันที่ต้องจ่ายยา:</label>
-    <input type="number" id="days" value="7">
+  <label for="currentINR">ค่า INR ปัจจุบัน:</label>
+  <input type="number" id="currentINR" min="0" step="0.01" required />
 
-    <label>ขนาดเม็ดยา:</label>
-    <div>
-      <label><input type="radio" name="tablet" value="2" checked> 2 mg</label>
-      <label><input type="radio" name="tablet" value="3"> 3 mg</label>
-    </div>
+  <label for="days">จำนวนวันนัด (วัน):</label>
+  <input type="number" id="days" min="1" step="1" required />
 
-    <label>มีอาการเลือดออกหรือไม่:</label>
-    <div>
-      <label><input type="radio" name="bleed" value="no" checked> ไม่มี</label>
-      <label><input type="radio" name="bleed" value="yes"> มี</label>
-    </div>
+  <label>ขนาดเม็ดยา Warfarin ที่เลือก:</label>
+  <select id="tabletChoice">
+    <option value="2">2 mg</option>
+    <option value="3">3 mg</option>
+    <option value="5">5 mg (3+2 mg)</option>
+    <option value="both">ทั้ง 2 mg และ 3 mg</option>
+  </select>
 
-    <button onclick="calculate()">คำนวณ</button>
-  </div>
+  <button onclick="calculateWarfarinDose()">คำนวณ</button>
+</form>
 
-  <div class="column" id="results" style="display:none;">
-    <h2>ผลลัพธ์</h2>
-    <div class="card info">
-      <strong>ขนาดยาที่ต้องปรับ:</strong>
-      <span id="newDoseText"></span> mg
-    </div>
-    <div class="card">
-      <strong>คำแนะนำ:</strong>
-      <span id="advice"></span>
-    </div>
+<div id="result" class="result" style="display:none;"></div>
+<div id="warning" class="warning" style="display:none;"></div>
 
-    <h3>แผนการให้ยา 7 วัน (ต่ำสุด)</h3>
-    <table class="table" id="planMin">
-      <thead><tr><th>วัน</th><th>3 mg</th><th>2 mg</th><th>รวม mg</th></tr></thead>
-      <tbody></tbody>
-    </table>
-
-    <h3>แผนการให้ยา 7 วัน (เฉลี่ย)</h3>
-    <table class="table" id="planAvg">
-      <thead><tr><th>วัน</th><th>3 mg</th><th>2 mg</th><th>รวม mg</th></tr></thead>
-      <tbody></tbody>
-    </table>
-
-    <h3>แผนการให้ยา 7 วัน (สูงสุด)</h3>
-    <table class="table" id="planMax">
-      <thead><tr><th>วัน</th><th>3 mg</th><th>2 mg</th><th>รวม mg</th></tr></thead>
-      <tbody></tbody>
-    </table>
-
-    <h3>สรุปจำนวนยาที่ต้องจ่าย</h3>
-    <div id="supplySummary"></div>
-  </div>
-</div>
 <script src="script.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(() => {
+      console.log('Service Worker registered');
+    });
+  }
+</script>
+
 </body>
 </html>
