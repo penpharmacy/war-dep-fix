@@ -1,38 +1,79 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>คำนวณขนาดยา Warfarin</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('Service worker registered.', reg));
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warfarin Calculator PPH</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
 </head>
-
 <body>
-  <div class="container">
-    <h1>คำนวณขนาดยา Warfarin</h1>
-    <label>ค่า INR ล่าสุด:
-      <input type="number" id="inr" step="0.1" required />
-    </label>
-    <label>ขนาดยาเฉลี่ยต่อสัปดาห์ (mg):
-      <input type="number" id="weeklyDose" step="0.1" required />
-    </label>
-    <label>มีเลือดออกหรือไม่:
-      <select id="bleeding">
-        <option value="no">ไม่มี</option>
-        <option value="yes">มี</option>
-      </select>
-    </label>
+<div class="container">
+  <div class="column">
+    <h1>Warfarin Calculator</h1>
+
+    <label>ค่า INR:</label>
+    <input type="number" id="inr" step="0.1">
+
+    <label>ขนาดยารวมต่อสัปดาห์ (mg):</label>
+    <input type="number" id="weeklyDose" step="0.1">
+
+    <label>จำนวนวันที่ต้องจ่ายยา:</label>
+    <input type="number" id="days" value="7">
+
+    <label>ขนาดเม็ดยา:</label>
+    <div>
+      <label><input type="radio" name="tablet" value="2" checked> 2 mg</label>
+      <label><input type="radio" name="tablet" value="3"> 3 mg</label>
+    </div>
+
+    <label>มีอาการเลือดออกหรือไม่:</label>
+    <div>
+      <label><input type="radio" name="bleed" value="no" checked> ไม่มี</label>
+      <label><input type="radio" name="bleed" value="yes"> มี</label>
+    </div>
+
     <button onclick="calculate()">คำนวณ</button>
-    <div id="result"></div>
   </div>
-  <script src="script.js"></script>
+
+  <div class="column" id="results" style="display:none;">
+    <h2>ผลลัพธ์</h2>
+    <div class="card info">
+      <strong>ขนาดยาที่ต้องปรับ:</strong>
+      <span id="newDoseText"></span> mg
+    </div>
+    <div class="card">
+      <strong>คำแนะนำ:</strong>
+      <span id="advice"></span>
+    </div>
+
+    <h3>แผนการให้ยา 7 วัน (ต่ำสุด)</h3>
+    <table class="table" id="planMin">
+      <thead><tr><th>วัน</th><th>3 mg</th><th>2 mg</th><th>รวม mg</th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <h3>แผนการให้ยา 7 วัน (เฉลี่ย)</h3>
+    <table class="table" id="planAvg">
+      <thead><tr><th>วัน</th><th>3 mg</th><th>2 mg</th><th>รวม mg</th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <h3>แผนการให้ยา 7 วัน (สูงสุด)</h3>
+    <table class="table" id="planMax">
+      <thead><tr><th>วัน</th><th>3 mg</th><th>2 mg</th><th>รวม mg</th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <h3>สรุปจำนวนยาที่ต้องจ่าย</h3>
+    <div id="supplySummary"></div>
+  </div>
+</div>
+<script src="script.js"></script>
 </body>
 </html>

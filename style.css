@@ -1,46 +1,11 @@
-
-body {
-  font-family: 'Sarabun', sans-serif;
-  background-color: #ffeef5;
-  margin: 0;
-  padding: 0;
-}
-.container {
-  max-width: 500px;
-  margin: 40px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 105, 180, 0.2);
-}
-h1 {
-  text-align: center;
-  color: #d63384;
-}
-label {
-  display: block;
-  margin: 15px 0 5px;
-}
-input, select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-button {
-  background-color: #d63384;
-  color: white;
-  padding: 10px;
-  border: none;
-  width: 100%;
-  border-radius: 5px;
-  font-size: 16px;
-  margin-top: 15px;
-}
-#result {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #fff0f6;
-  border-left: 5px solid #d63384;
-  border-radius: 5px;
-}
+body { font-family: sans-serif; padding: 10px; background: #f5f5f5; }
+.container { display: flex; flex-wrap: wrap; gap: 20px; }
+.column { flex: 1; min-width: 300px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+label { display: block; margin-top: 10px; }
+input[type=number] { width: 100%; padding: 5px; margin-top: 5px; }
+button { margin-top: 15px; padding: 10px; background: #2e86de; color: white; border: none; border-radius: 5px; cursor: pointer; }
+button:hover { background: #1e5fad; }
+.table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.table th, .table td { border: 1px solid #ccc; padding: 5px; text-align: center; }
+.card { padding: 10px; border-radius: 5px; background: #f0f0f0; margin: 5px 0; }
+.card.info { background: #dff9fb; }
