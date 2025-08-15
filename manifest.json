@@ -1,19 +1,20 @@
 {
-  "name": "Warfarin Dose Calculator (PMK Style)",
-  "short_name": "WarfarinCalc",
+  "name": "WARFARIN CALCULATOR PPH",
+  "short_name": "Warfarin PPH",
+  "description": "แอปคำนวณขนาดยา Warfarin ตามค่า INR (2mg และ 3mg)",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b4971",
-  "theme_color": "#0b4971",
-  "description": "แอปคำนวณขนาดยา Warfarin ตามค่า INR และคำแนะนำ PMK",
+  "background_color": "#ff6b81",
+  "theme_color": "#ff4757",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
