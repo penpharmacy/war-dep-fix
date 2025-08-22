@@ -266,9 +266,9 @@ plansDiv.innerHTML += buildPlanHTML(t.k, best, pctText);
     const totalMaxMg = summaryData.max.total * (days / 7);
 
     summaryDiv.innerHTML = `สำหรับช่วงนัด ${days} วัน\n\n`+
-      `ต่ำสุด: ต้องใช้รวม ${min3.toFixed(2)} เม็ด(3 mg) และ ${min2.toFixed(2)} เม็ด(2 mg) -> จำนวนเม็ดจริงที่ควรจ่าย (ปัดขึ้น): ${Math.ceil(min3)} เม็ด(3 mg), ${Math.ceil(min2)} เม็ด(2 mg).\n\n`+
-      `เฉลี่ย: ต้องใช้รวม ${avg3.toFixed(2)} เม็ด(3 mg) และ ${avg2.toFixed(2)} เม็ด(2 mg) -> จำนวนเม็ดจริงที่ควรจ่าย (ปัดขึ้น): ${Math.ceil(avg3)} เม็ด(3 mg), ${Math.ceil(avg2)} เม็ด(2 mg).\n\n`+
-      `สูงสุด: ต้องใช้รวม ${max3.toFixed(2)} เม็ด(3 mg) และ ${max2.toFixed(2)} เม็ด(2 mg) -> จำนวนเม็ดจริงที่ควรจ่าย (ปัดขึ้น): ${Math.ceil(max3)} เม็ด(3 mg), ${Math.ceil(max2)} เม็ด(2 mg).\n\n`+
+      `ต่ำสุด: ต้องใช้รวม ${min3.toFixed(1)} เม็ด(3 mg) และ ${min2.toFixed(1)} เม็ด(2 mg) -> จำนวนเม็ดจริงที่ควรจ่าย (ปัดขึ้น): ${Math.ceil(min3)} เม็ด(3 mg), ${Math.ceil(min2)} เม็ด(2 mg).\n\n`+
+      `เฉลี่ย: ต้องใช้รวม ${avg3.toFixed(1)} เม็ด(3 mg) และ ${avg2.toFixed(1)} เม็ด(2 mg) -> จำนวนเม็ดจริงที่ควรจ่าย (ปัดขึ้น): ${Math.ceil(avg3)} เม็ด(3 mg), ${Math.ceil(avg2)} เม็ด(2 mg).\n\n`+
+      `สูงสุด: ต้องใช้รวม ${max3.toFixed(1)} เม็ด(3 mg) และ ${max2.toFixed(1)} เม็ด(2 mg) -> จำนวนเม็ดจริงที่ควรจ่าย (ปัดขึ้น): ${Math.ceil(max3)} เม็ด(3 mg), ${Math.ceil(max2)} เม็ด(2 mg).\n\n`+
       `ปริมาณรวม (mg): ต่ำสุด ${totalMinMg.toFixed(2)} mg, เฉลี่ย ${totalAvgMg.toFixed(2)} mg, สูงสุด ${totalMaxMg.toFixed(2)} mg.`;
 
     summaryDiv.classList.add('note');
