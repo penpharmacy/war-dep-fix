@@ -247,7 +247,10 @@ function calculate(){
       if(t.k==='ต่ำสุด'){summaryData.min=best;}
       if(t.k==='เฉลี่ย'){summaryData.avg=best;}
       if(t.k==='สูงสุด'){summaryData.max=best;}
-      const pctText = t.pct === 0 ? '±0%' : (t.pct > 0 ? `+${(t.pct*100).toFixed(0)}%` : `${(t.pct*100).toFixed(0)}%`);
+    //  const pctText = t.pct === 0 ? '±0%' : (t.pct > 0 ? `+${(t.pct*100).toFixed(0)}%` : `${(t.pct*100).toFixed(0)}%`);
+// เปอร์เซ็นต์การเปลี่ยนแปลงจริง
+      const diffPct = weeklyDose === 0 ? 0 : ((best.total - weeklyDose) / weeklyDose) * 100;
+      const pctText = diffPct > 0 ? `+${diffPct.toFixed(1)}%` : `${diffPct.toFixed(1)}%`;
 plansDiv.innerHTML += buildPlanHTML(t.k, best, pctText);
     });
 
