@@ -1302,7 +1302,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('input[name="displayMode"]').forEach(el=>el.addEventListener('change',calculate));
     document.querySelectorAll('input[name="pills"]').forEach(el=>el.addEventListener('change',calculate));
     document.querySelectorAll('input[name="bleed"]').forEach(el=>el.addEventListener('change',calculate));
-    document.getElementById('inr').addEventListener('input',calculate);
+   document.getElementById('inr').addEventListener('input', function(e){
+
+    const inr = parseFloat(e.target.value);
+
+    // highlight realtime
+    highlightGuidelineByINR(inr);
+
+    // คำนวณตามปกติ
+    calculate();
+});
     document.getElementById('weeklyDose').addEventListener('input',calculate);
     document.getElementById('days').addEventListener('input',calculate);
 
