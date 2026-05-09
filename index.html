@@ -62,16 +62,41 @@
 }
 
 function highlightGuidelineByINR(inr){
-    const table = document.querySelector('.guideline-card');
+    const rows = document.querySelectorAll('.guideline-table tbody tr');
 
-    if(!table) return;
-
-    table.classList.remove('guideline-highlight');
+    // ล้าง highlight เดิมทั้งหมด
+    rows.forEach(row=>{
+        row.classList.remove('guideline-highlight');
+    });
 
     if(isNaN(inr)) return;
 
-    if(inr > 0){
-        table.classList.add('guideline-highlight');
+    let targetRow = null;
+
+    if(inr < 1.5){
+        targetRow = rows[0];
+    }
+    else if(inr >= 1.5 && inr <= 1.9){
+        targetRow = rows[1];
+    }
+    else if(inr >= 2.0 && inr <= 3.0){
+        targetRow = rows[2];
+    }
+    else if(inr >= 3.1 && inr <= 3.9){
+        targetRow = rows[3];
+    }
+    else if(inr >= 4.0 && inr <= 4.9){
+        targetRow = rows[4];
+    }
+    else if(inr >= 5.0 && inr < 9.0){
+        targetRow = rows[5];
+    }
+    else if(inr >= 9.0){
+        targetRow = rows[6];
+    }
+
+    if(targetRow){
+        targetRow.classList.add('guideline-highlight');
     }
 }
 
@@ -142,7 +167,13 @@ function highlightGuidelineByINR(inr){
     .main-top-layout .guideline-panel{
         flex: 1 1 100%;
     }
-}    
+}  
+    .guideline-table tr.guideline-highlight td{
+    background: #00C853 !important;
+    color: #fff !important;
+    font-weight: 700;
+    animation: glowPulse 1s infinite alternate;
+}
 /* --- COPY PROTECTION STYLES (เดิม) --- */
 body {
     user-select: none; /* Standard syntax */
