@@ -912,6 +912,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const inr = parseFloat(inrInput.value);
+        highlightGuidelineByINR(inr);
         const weeklyDose = parseFloat(weeklyDoseInput.value);
         const pillChoice = document.querySelector('input[name="pills"]:checked').value;
         const bleed = document.querySelector('input[name="bleed"]:checked').value;
