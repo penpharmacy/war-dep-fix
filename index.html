@@ -61,12 +61,18 @@
     border-top: 1px solid #ECEFF1;
 }
 
-/* highlight effect */
-.guideline-highlight {
-    animation: glowPulse 1.2s infinite alternate;
-    outline: 4px solid #00C853;
-    outline-offset: -4px;
-    border-radius: 12px;
+function highlightGuidelineByINR(inr){
+    const table = document.querySelector('.guideline-card');
+
+    if(!table) return;
+
+    table.classList.remove('guideline-highlight');
+
+    if(isNaN(inr)) return;
+
+    if(inr > 0){
+        table.classList.add('guideline-highlight');
+    }
 }
 
 @keyframes glowPulse {
