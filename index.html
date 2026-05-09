@@ -676,7 +676,19 @@ function clearData() {
 // ******************************************************
 // ** DOM CONTENT LOADED (สำหรับ Event Listeners และ Funtions ภายใน) **
 // ******************************************************
+function highlightGuidelineByINR(inr){
+    const img = document.getElementById('guidelineImage');
 
+    if(!img) return;
+
+    img.classList.remove('guideline-highlight');
+
+    if(isNaN(inr)) return;
+
+    if(inr > 0){
+        img.classList.add('guideline-highlight');
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     
     // --- FUNTIONS เดิมที่ถูกเรียกใช้โดย Event Listeners (Local) ---
