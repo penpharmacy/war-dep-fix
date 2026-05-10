@@ -62,6 +62,7 @@
 }
 
 function highlightGuidelineByINR(inr){
+
     const rows = document.querySelectorAll('.guideline-table tbody tr');
 
     // ล้าง highlight เดิม
@@ -69,10 +70,12 @@ function highlightGuidelineByINR(inr){
         row.classList.remove('guideline-highlight');
     });
 
-    // ⭐ เพิ่มใหม่: ถ้ามี bleed ให้ highlight แถวสุดท้ายทันที
+    // ⭐ ตรวจ bleed ก่อน
     const bleed = document.querySelector('input[name="bleed"]:checked')?.value;
 
+    // ถ้ามีเลือดออก → highlight แถว bleeding ทันที
     if(bleed === 'yes'){
+
         rows[7].classList.add('guideline-highlight');
 
         rows[7].scrollIntoView({
@@ -120,6 +123,7 @@ function highlightGuidelineByINR(inr){
     }
 
     if(targetRow){
+
         targetRow.classList.add('guideline-highlight');
 
         targetRow.scrollIntoView({
