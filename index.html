@@ -1233,7 +1233,7 @@ if(targetRange === '2-3'){
         adj.minPct=0.05;
         adj.maxPct=0.10;
         adj.avgPct=0.075;
-        adj.note='เพิ่ม 5–10%';
+        adj.note='เพิ่ม 5–10% หรือพิจารณาไม่ปรับ แต่ติดตาม INR บ่อยขึ้น';
     }
     else if(inr>=2.0 && inr<3.1){
         adj.minPct=0;
@@ -1245,25 +1245,25 @@ if(targetRange === '2-3'){
         adj.minPct=-0.10;
         adj.maxPct=-0.05;
         adj.avgPct=-0.075;
-        adj.note='ลดขนาดยา 5–10%';
+        adj.note='ลดขนาดยารายสัปดาห์ 5–10%';
     }
     else if(inr>=4.0 && inr<5.0){
         adj.minPct=-0.10;
         adj.maxPct=-0.10;
         adj.avgPct=-0.10;
-        adj.note='หยุดยา 1 วัน แล้วลดขนาดยา 10%';
+        adj.note='หยุดยา 1 วัน แล้วกลับมาเริ่มด้วยขนาดที่ลดลง 10%';
     }
     else if(inr>=5.0 && inr<9.0){
         adj.minPct=-0.20;
         adj.maxPct=-0.20;
         adj.avgPct=-0.20;
-        adj.note='หยุดยา 2 วัน และพิจารณา Vitamin K1';
+        adj.note='หยุดยา 2 วัน แล้วกลับมาเริ่มด้วยขนาดที่ลดลง 20% — พิจารณาให้ Vitamin K₁รับประทาน';
     }
     else if(inr>=9.0){
         adj.minPct=null;
         adj.maxPct=null;
         adj.avgPct=null;
-        adj.note='INR > 9 : ให้ Vitamin K1 และติดตาม INR อย่างใกล้ชิด';
+        adj.note='INR > 9 : ให้ Vitamin K1รับประทาน และติดตาม INR อย่างใกล้ชิด';
     }
 
 }
@@ -1291,7 +1291,7 @@ else{
         adj.minPct=-0.10;
         adj.maxPct=-0.05;
         adj.avgPct=-0.075;
-        adj.note='ลดขนาดยา 5–10%';
+        adj.note='ลดขนาดยารายสัปดาห์ 5–10%';
     }
     else if(inr>=4.6 && inr<5.0){
         adj.minPct=-0.10;
@@ -1303,13 +1303,13 @@ else{
         adj.minPct=-0.20;
         adj.maxPct=-0.20;
         adj.avgPct=-0.20;
-        adj.note='หยุดยา 2 วัน และพิจารณา Vitamin K1';
+        adj.note='หยุดยา 2 วัน และพิจารณา Vitamin K1รับประทาน';
     }
     else if(inr>=9.0){
         adj.minPct=null;
         adj.maxPct=null;
         adj.avgPct=null;
-        adj.note='INR > 9 : ให้ Vitamin K1 และติดตาม INR อย่างใกล้ชิด';
+        adj.note='INR > 9 : หยุดยา ให้ Vitamin K₁ 2.5–5 mg รับประทาน และติดตาม INR อย่างใกล้ชิด';
     }
 }
         
