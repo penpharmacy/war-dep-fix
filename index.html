@@ -1342,8 +1342,10 @@ if (bleed !== 'yes') {
 }
         if(newRange.note) html += `<p class="note">${newRange.note}</p>`;
         else html += `<p>ขนาดยาใหม่ต่อสัปดาห์ (mg) : <strong>${newRange.minCalc.toFixed(2)} — ${newRange.maxCalc.toFixed(2)}</strong> (เฉลี่ย ${newRange.avgCalc.toFixed(2)} mg)</p>`;
-        html += `</div>`;
-        resDiv.innerHTML = html;
+     if (bleed !== 'yes') {
+    html += `</div>`;
+    resDiv.innerHTML = html;
+}
         resDiv.style.display='block';
         plansDiv.innerHTML='';
         
