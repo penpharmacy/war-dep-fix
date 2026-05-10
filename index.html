@@ -1335,7 +1335,11 @@ else{
            };
         }
         
-        let html = `<div class="card"><p><strong>คำแนะนำ:</strong> INR = ${inr.toFixed(2)} — ${adj.note}</p>`;
+        let html = '';
+
+if (bleed !== 'yes') {
+    html = `<div class="card"><p><strong>คำแนะนำ:</strong> INR = ${inr.toFixed(2)} — ${adj.note}</p>`;
+}
         if(newRange.note) html += `<p class="note">${newRange.note}</p>`;
         else html += `<p>ขนาดยาใหม่ต่อสัปดาห์ (mg) : <strong>${newRange.minCalc.toFixed(2)} — ${newRange.maxCalc.toFixed(2)}</strong> (เฉลี่ย ${newRange.avgCalc.toFixed(2)} mg)</p>`;
         html += `</div>`;
