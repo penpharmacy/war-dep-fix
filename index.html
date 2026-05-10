@@ -114,9 +114,8 @@
         flex: 1 1 100%;
     }
 }  
-
-/* highlight เฉพาะ cell */
-.guideline-highlight-cell{
+/* highlight guideline row */
+.guideline-table tr.guideline-highlight td{
     background:#00C853 !important;
     color:#fff !important;
     font-weight:700;
@@ -448,20 +447,6 @@ footer{font-size:13px;color:var(--muted);text-align:center;padding:8px}
 <div class="calculator-panel">
 <section class="card">
         <form id="form">
-            <div style="margin-bottom:12px">
-    <label>Target INR Range</label>
-    <div class="radio-row">
-        <label class="pill">
-            <input type="radio" name="targetRange" value="2-3" checked>
-            Keep 2.0 - 3.0
-        </label>
-
-        <label class="pill">
-            <input type="radio" name="targetRange" value="2.5-3.5">
-            Keep 2.5 - 3.5
-        </label>
-    </div>
-</div>
             <div class="row">
                 <div class="col">
                     <label>INR ปัจจุบัน</label>
@@ -833,27 +818,22 @@ function highlightGuidelineByINR(inr){
     const rows = document.querySelectorAll('.guideline-table tbody tr');
 
     // ล้าง highlight เดิม
-    document.querySelectorAll('.guideline-highlight-cell').forEach(el=>{
-        el.classList.remove('guideline-highlight-cell');
+    rows.forEach(row=>{
+        row.classList.remove('guideline-highlight');
     });
 
+    // ⭐ ตรวจ bleed ก่อน
     const bleed = document.querySelector('input[name="bleed"]:checked')?.value;
-    const targetRange = document.querySelector('input[name="targetRange"]:checked')?.value || '2-3';
 
-    // column index
-    // 0 = keep 2-3
-    // 1 = keep 2.5-3.5
-    // 2 = แนวทาง
-
-    const keepCol = targetRange === '2-3' ? 0 : 1;
-
-    // bleeding
+    // ถ้ามีเลือดออก → highlight แถว Major Bleeding ทันที
     if(bleed === 'yes'){
 
-        rows[7].children[0].classList.add('guideline-highlight-cell');
-        rows[7].children[1].classList.add('guideline-highlight-cell');
+        rows[7].classList.add('guideline-highlight');
 
-        rows[7].children[2].classList.add('guideline-highlight-cell');
+        rows[7].scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
 
         return;
     }
@@ -862,89 +842,48 @@ function highlightGuidelineByINR(inr){
 
     let targetRow = null;
 
-    if(targetRange === '2-3'){
+    // row index
+    // 0 = <1.5
+    // 1 = 1.5-1.9
+    // 2 = therapeutic
+    // 3 = 3.1-3.9
+    // 4 = 4.0-4.9
+    // 5 = 5.0-8.9
+    // 6 = >=9
+    // 7 = bleeding
 
-        if(inr < 1.5){
-            targetRow = rows[0];
-        }
-        else if(inr >= 1.5 && inr < 2.0){
-            targetRow = rows[1];
-        }
-        else if(inr >= 2.0 && inr < 3.1){
-            targetRow = rows[2];
-        }
-        else if(inr >= 3.1 && inr < 4.0){
-            targetRow = rows[3];
-        }
-        else if(inr >= 4.0 && inr < 5.0){
-            targetRow = rows[4];
-        }
-        else if(inr >= 5.0 && inr < 9.0){
-            targetRow = rows[5];
-        }
-        else if(inr >= 9.0){
-            targetRow = rows[6];
-        }
-
-    } else {
-
-        // keep 2.5-3.5
-
-        if(inr < 1.9){
-            targetRow = rows[0];
-        }
-        else if(inr >= 1.9 && inr < 2.5){
-            targetRow = rows[1];
-        }
-        else if(inr >= 2.5 && inr < 3.6){
-            targetRow = rows[2];
-        }
-        else if(inr >= 3.6 && inr < 4.6){
-            targetRow = rows[3];
-        }
-        else if(inr >= 4.6 && inr < 5.0){
-            targetRow = rows[4];
-        }
-        else if(inr >= 5.0 && inr < 9.0){
-            targetRow = rows[5];
-        }
-        else if(inr >= 9.0){
-            targetRow = rows[6];
-        }
+    if(inr < 1.5){
+        targetRow = rows[0];
+    }
+    else if(inr >= 1.5 && inr < 2.0){
+        targetRow = rows[1];
+    }
+    else if(inr >= 2.0 && inr < 3.1){
+        targetRow = rows[2];
+    }
+    else if(inr >= 3.1 && inr < 4.0){
+        targetRow = rows[3];
+    }
+    else if(inr >= 4.0 && inr < 5.0){
+        targetRow = rows[4];
+    }
+    else if(inr >= 5.0 && inr < 9.0){
+        targetRow = rows[5];
+    }
+    else if(inr >= 9.0){
+        targetRow = rows[6];
     }
 
     if(targetRow){
 
-        // highlight เฉพาะช่อง keep ที่เลือก
-        if(targetRow.children[keepCol]){
-            targetRow.children[keepCol].classList.add('guideline-highlight-cell');
-        }
+        targetRow.classList.add('guideline-highlight');
 
-        // highlight ช่องแนวทาง
-        if(targetRow.children[2]){
-            targetRow.children[2].classList.add('guideline-highlight-cell');
-        }
-
-   if(targetRow){
-
-    // highlight เฉพาะช่อง keep ที่เลือก
-    if(targetRow.children[keepCol]){
-        targetRow.children[keepCol].classList.add('guideline-highlight-cell');
+        targetRow.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
     }
-
-    // highlight ช่องแนวทาง
-    if(targetRow.children[2]){
-        targetRow.children[2].classList.add('guideline-highlight-cell');
-    }
-
-    targetRow.scrollIntoView({
-        behavior:'smooth',
-        block:'center'
-    });
 }
-
-} // <-- ปิด function highlightGuidelineByINR ตรงนี้ให้ถูก
-
 document.addEventListener('DOMContentLoaded', function() {
     
     // --- FUNTIONS เดิมที่ถูกเรียกใช้โดย Event Listeners (Local) ---
@@ -1319,59 +1258,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-/* =====================================================
-   AUTO REALTIME UPDATE ทุกการคลิก/เปลี่ยนค่า
-===================================================== */
 
-// input number ทุกช่อง
-document.querySelectorAll('input[type="number"]').forEach(el=>{
-    el.addEventListener('input', autoUpdate);
-    el.addEventListener('change', autoUpdate);
-});
+    // --- EVENT LISTENERS (เดิม) ---
+  // --- EVENT LISTENERS (เดิม) ---
+document.querySelectorAll('input[name="displayMode"]').forEach(el=>el.addEventListener('change',calculate));
+document.querySelectorAll('input[name="pills"]').forEach(el=>el.addEventListener('change',calculate));
+document.querySelectorAll('input[name="bleed"]').forEach(el=>el.addEventListener('change',calculate));
 
-// radio ทุกตัว
-document.querySelectorAll('input[type="radio"]').forEach(el=>{
-    el.addEventListener('change', autoUpdate);
-    el.addEventListener('click', autoUpdate);
-});
-
-// ปุ่มทั้งหมด
-document.querySelectorAll('button').forEach(btn=>{
-    btn.addEventListener('click', function(){
-        setTimeout(autoUpdate, 50);
+/* ⭐ เพิ่มตรงนี้ */
+document.querySelectorAll('input[name="bleed"]').forEach(el=>{
+    el.addEventListener('change', function(){
+        const inr = parseFloat(document.getElementById('inr').value);
+        highlightGuidelineByINR(inr);
     });
 });
 
-/* ฟังก์ชันรวม */
-function autoUpdate(){
 
-    // calculator หลัก
+   document.getElementById('inr').addEventListener('input', function(e){
+
+    const inr = parseFloat(e.target.value);
+
+    // highlight realtime
+    highlightGuidelineByINR(inr);
+
+    // คำนวณตามปกติ
     calculate();
+});
+    document.getElementById('weeklyDose').addEventListener('input',calculate);
+    document.getElementById('days').addEventListener('input',calculate);
 
-    // calculator เปรียบเทียบ
-    calculateComparison(false);
-
-    // guideline highlight
-    const inr = parseFloat(document.getElementById('inr').value);
-
-    if(!isNaN(inr)){
-        highlightGuidelineByINR(inr);
-    }
-}
-
-/* โหลดครั้งแรก */
-autoUpdate();
-
-/* listener เพิ่มเติม */
-document.getElementById('weeklyDose').addEventListener('input', calculate);
-document.getElementById('days').addEventListener('input', calculate);
-document.getElementById('inr').addEventListener('input', calculate);
-
-/* เรียกครั้งแรก */
-calculate();
-
-
+    // เรียกใช้ calculate() เพื่อแสดงผลเริ่มต้นเมื่อโหลดหน้าเว็บ
+    calculate(); 
 });
 </script>
 </body>
-</html>
+</html> 
