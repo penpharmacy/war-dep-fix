@@ -1160,25 +1160,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const inr = parseFloat(inrInput.value);
-        highlightGuidelineByINR(inr);
-        const weeklyDose = parseFloat(weeklyDoseInput.value);
-        const pillChoice = document.querySelector('input[name="pills"]:checked').value;
-        const bleed = document.querySelector('input[name="bleed"]:checked').value;
-        const displayMode =
-document.querySelector('input[name="displayMode"]:checked').value;
+const weeklyDose = parseFloat(weeklyDoseInput.value);
+const pillChoice = document.querySelector('input[name="pills"]:checked').value;
+const bleed = document.querySelector('input[name="bleed"]:checked')?.value;
 
-const targetRange =
-document.querySelector('input[name="targetRange"]:checked').value;
-        
-  // ถ้ามีเลือดออก ให้แสดงข้อความทันที
+// 🔴 ย้ายมาไว้ตรงนี้ทันที (ก่อน highlight / logic อื่นทั้งหมด)
 if (bleed === 'yes') {
 
-    // ล้าง highlight เดิม
-    document.querySelectorAll('.guideline-highlight-cell').forEach(el => {
-        el.classList.remove('guideline-highlight-cell');
-    });
-
-    // highlight แถว Major Bleeding
     const rows = document.querySelectorAll('.guideline-table tbody tr');
 
     if (rows[7]) {
@@ -1187,7 +1175,6 @@ if (bleed === 'yes') {
         rows[7].children[2].classList.add('guideline-highlight-cell');
     }
 
-    // แสดงข้อความเตือน
     resDiv.innerHTML = `
         <div class="note" style="
             background:#FFEBEE;
@@ -1195,22 +1182,18 @@ if (bleed === 'yes') {
             color:#B71C1C;
             font-size:16px;
             font-weight:600;
-            line-height:1.7;
         ">
-            ⚠️ พบภาวะเลือดออก:
-            ให้ Vit K1 และพิจารณาการรักษาเฉียบพลันตามข้อแนะนำทางการแพทย์
+            ⚠️ พบภาวะเลือดออก:  
+            ให้ Vitamin K1 และพิจารณาการรักษาตามแนวทาง
         </div>
     `;
 
     resDiv.style.display = 'block';
-
-    // ซ่อนตารางคำนวณทั้งหมด
     tables.style.display = 'none';
     tables.hidden = true;
-
     plansDiv.innerHTML = '';
 
-    return;
+    return; // ❗ ต้องออกทันที
 }
 
 // ค่อยตรวจ NaN ทีหลัง
