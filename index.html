@@ -1172,13 +1172,22 @@ document.querySelector('input[name="targetRange"]:checked').value;
         
         if(isNaN(inr)||isNaN(weeklyDose)) return; 
         
-        if(bleed==='yes'){
-           resDiv.innerHTML = `<div class="card"><p><strong>คำแนะนำ:</strong> พบภาวะเลือดออก: ให้ Vit K1 และพิจารณาการรักษาเฉียบพลันตามข้อแนะนำทางการแพทย์</p></div>`;
-           resDiv.style.display='block';
-           tables.style.display='none';
-           plansDiv.innerHTML='';
-           return;
-        }
+       if(bleed === 'yes'){
+    resDiv.innerHTML = `
+        <div class="card">
+            <p>
+                <strong>คำแนะนำ:</strong>
+                พบภาวะเลือดออก: ให้ Vit K1 และพิจารณาการรักษาเฉียบพลันตามข้อแนะนำทางการแพทย์
+            </p>
+        </div>
+    `;
+
+    resDiv.style.display = 'block';
+    tables.style.display = 'none';
+    plansDiv.innerHTML = '';
+
+    return;
+}
         
        let adj = {
     minPct:0,
