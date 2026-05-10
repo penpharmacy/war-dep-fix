@@ -165,22 +165,7 @@ function highlightGuidelineByINR(inr){
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-/* highlight guideline */
-.guideline-highlight {
-    animation: glowPulse 1.2s infinite alternate;
-    outline: 4px solid #00C853;
-    outline-offset: -4px;
-    border-radius: 12px;
-}
 
-@keyframes glowPulse {
-    from {
-        box-shadow: 0 0 0 rgba(0,200,83,0.2);
-    }
-    to {
-        box-shadow: 0 0 18px rgba(0,200,83,0.8);
-    }
-}
 
 @media(max-width:900px){
     .main-top-layout{
@@ -193,25 +178,29 @@ function highlightGuidelineByINR(inr){
     }
 }  
 /* highlight guideline row */
-.guideline-table tr.guideline-highlight td{
-    background: #00C853 !important;
-    color: #fff !important;
-    font-weight: 700;
-    animation: glowPulse 0.9s infinite alternate;
-    transition: all .25s ease;
+.guideline-table tbody tr.guideline-highlight td{
+    background:#00C853 !important;
+    color:#fff !important;
+    font-weight:700;
+    transition:all .25s ease;
+    animation: guidelineGlow 1s infinite alternate;
 }
 
-/* glow effect */
-@keyframes glowPulse {
+.guideline-table tbody tr.guideline-highlight{
+    position:relative;
+}
+
+@keyframes guidelineGlow{
     from{
-        box-shadow: 0 0 4px rgba(0,200,83,0.3);
+        box-shadow:0 0 4px rgba(0,200,83,.25);
     }
     to{
         box-shadow:
-            0 0 12px rgba(0,200,83,0.7),
-            0 0 24px rgba(0,200,83,0.45);
+            0 0 14px rgba(0,200,83,.75),
+            0 0 26px rgba(0,200,83,.45);
     }
 }
+
 /* --- COPY PROTECTION STYLES (เดิม) --- */
 body {
     user-select: none; /* Standard syntax */
