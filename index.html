@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 /* ===== Warfarin Guideline Table ===== */
-.guideline-card{
     overflow: hidden;
 }
 
@@ -74,19 +73,15 @@ function highlightGuidelineByINR(inr){
     // ⭐ ตรวจ bleed ก่อน
     const bleed = document.querySelector('input[name="bleed"]:checked')?.value;
 
-    // ถ้ามีเลือดออก → highlight แถวสุดท้ายทันที
+    // ถ้ามีเลือดออก → highlight แถว bleeding ทันที
     if(bleed === 'yes'){
 
-        const bleedingRow = rows[7];
+        rows[7].classList.add('guideline-highlight');
 
-        if(bleedingRow){
-            bleedingRow.classList.add('guideline-highlight');
-
-            bleedingRow.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-        }
+        rows[7].scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
 
         return;
     }
@@ -169,7 +164,13 @@ function highlightGuidelineByINR(inr){
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-
+/* highlight guideline */
+.guideline-highlight {
+    animation: glowPulse 1.2s infinite alternate;
+    outline: 4px solid #00C853;
+    outline-offset: -4px;
+    border-radius: 12px;
+}
 
 @keyframes glowPulse {
     from {
@@ -891,7 +892,60 @@ function clearData() {
 // ******************************************************
 // ** DOM CONTENT LOADED (สำหรับ Event Listeners และ Funtions ภายใน) **
 // ******************************************************
+function highlightGuidelineByINR(inr){
+    const rows = document.querySelectorAll('.guideline-table tbody tr');
 
+    // ล้าง highlight เดิม
+    rows.forEach(row=>{
+        row.classList.remove('guideline-highlight');
+    });
+
+    if(isNaN(inr)) return;
+
+    let targetRow = null;
+
+    // row index
+    // 0 = <1.5
+    // 1 = 1.5-1.9
+    // 2 = therapeutic
+    // 3 = 3.1-3.9
+    // 4 = 4.0-4.9
+    // 5 = 5.0-8.9
+    // 6 = >=9
+    // 7 = bleeding
+
+    if(inr < 1.5){
+        targetRow = rows[0];
+    }
+    else if(inr >= 1.5 && inr <= 1.9){
+        targetRow = rows[1];
+    }
+    else if(inr >= 2.0 && inr <= 3.0){
+        targetRow = rows[2];
+    }
+    else if(inr >= 3.1 && inr <= 3.9){
+        targetRow = rows[3];
+    }
+    else if(inr >= 4.0 && inr <= 4.9){
+        targetRow = rows[4];
+    }
+    else if(inr >= 5.0 && inr < 9.0){
+        targetRow = rows[5];
+    }
+    else if(inr >= 9.0){
+        targetRow = rows[6];
+    }
+
+    if(targetRow){
+        targetRow.classList.add('guideline-highlight');
+
+        // auto scroll ไปยัง row
+        targetRow.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     
     // --- FUNTIONS เดิมที่ถูกเรียกใช้โดย Event Listeners (Local) ---
@@ -1281,7 +1335,16 @@ document.querySelectorAll('input[name="bleed"]').forEach(el=>{
     });
 });
 
+document.getElementById('inr').addEventListener('input', function(e){
 
+    const inr = parseFloat(e.target.value);
+
+    // highlight realtime
+    highlightGuidelineByINR(inr);
+
+    // คำนวณตามปกติ
+    calculate();
+});
    document.getElementById('inr').addEventListener('input', function(e){
 
     const inr = parseFloat(e.target.value);
