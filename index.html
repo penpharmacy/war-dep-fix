@@ -1172,38 +1172,48 @@ document.querySelector('input[name="targetRange"]:checked').value;
         
         if(isNaN(inr)||isNaN(weeklyDose)) return; 
         
-     if(bleed === 'yes'){
+   if (bleed === 'yes') {
 
-    resDiv.innerHTML = `
-        <div class="card">
-            <p>
-                <strong>คำแนะนำ:</strong>
-                พบภาวะเลือดออก: ให้ Vit K1 และพิจารณาการรักษาเฉียบพลันตามข้อแนะนำทางการแพทย์
-            </p>
-        </div>
-    `;
-
-    resDiv.style.display = 'block';
-
-    // ซ่อนตารางทั้งหมด
-    tables.style.display = 'none';
-    plansDiv.innerHTML = '';
-
-    // ซ่อนผล guideline เดิมทั้งหมด
-    document.querySelectorAll('.guideline-highlight-cell').forEach(el=>{
+    // ล้าง highlight เดิม
+    document.querySelectorAll('.guideline-highlight-cell').forEach(el => {
         el.classList.remove('guideline-highlight-cell');
     });
 
     // highlight แถว Major Bleeding
     const rows = document.querySelectorAll('.guideline-table tbody tr');
 
-    if(rows[7]){
+    if (rows[7]) {
         rows[7].children[0].classList.add('guideline-highlight-cell');
         rows[7].children[1].classList.add('guideline-highlight-cell');
         rows[7].children[2].classList.add('guideline-highlight-cell');
     }
 
-    return false;
+    // แสดงข้อความเตือน
+    resDiv.innerHTML = `
+        <div class="note" style="
+            background:#FFEBEE;
+            border-left:6px solid #E53935;
+            color:#B71C1C;
+            font-size:16px;
+            font-weight:600;
+            line-height:1.7;
+        ">
+            ⚠️ พบภาวะเลือดออก:
+            ให้ Vit K1 และพิจารณาการรักษาเฉียบพลันตามข้อแนะนำทางการแพทย์
+        </div>
+    `;
+
+    resDiv.style.display = 'block';
+
+    // ซ่อนตารางคำนวณทั้งหมด
+    tables.style.display = 'none';
+    tables.hidden = true;
+
+    // ล้าง plan
+    plansDiv.innerHTML = '';
+
+    // หยุดการคำนวณต่อทันที
+    return;
 }
         
        let adj = {
