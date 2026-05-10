@@ -1335,10 +1335,39 @@ else{
            };
         }
         
-        let html = '';
+     let html = '';
 
-if (bleed !== 'yes') {
-    html = `<div class="card"><p><strong>คำแนะนำ:</strong> INR = ${inr.toFixed(2)} — ${adj.note}</p>`;
+if (bleed === 'yes') {
+
+    html = `
+        <div class="card">
+            <p style="
+                color:#C62828;
+                font-weight:700;
+                font-size:16px;
+            ">
+                ⚠️ คำแนะนำ: พบภาวะเลือดออก
+            </p>
+
+            <div class="note" style="
+                background:#FFEBEE;
+                border-left:6px solid #E53935;
+                color:#B71C1C;
+            ">
+                ให้ Vitamin K1 และพิจารณาการรักษาตามแนวทาง
+            </div>
+        </div>
+    `;
+
+} else {
+
+    html = `
+        <div class="card">
+            <p>
+                <strong>คำแนะนำ:</strong>
+                INR = ${inr.toFixed(2)} — ${adj.note}
+            </p>
+    `;
 }
         if(newRange.note) html += `<p class="note">${newRange.note}</p>`;
         else html += `<p>ขนาดยาใหม่ต่อสัปดาห์ (mg) : <strong>${newRange.minCalc.toFixed(2)} — ${newRange.maxCalc.toFixed(2)}</strong> (เฉลี่ย ${newRange.avgCalc.toFixed(2)} mg)</p>`;
