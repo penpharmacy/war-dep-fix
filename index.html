@@ -1172,7 +1172,8 @@ document.querySelector('input[name="targetRange"]:checked').value;
         
         if(isNaN(inr)||isNaN(weeklyDose)) return; 
         
-       if(bleed === 'yes'){
+     if(bleed === 'yes'){
+
     resDiv.innerHTML = `
         <div class="card">
             <p>
@@ -1183,10 +1184,26 @@ document.querySelector('input[name="targetRange"]:checked').value;
     `;
 
     resDiv.style.display = 'block';
+
+    // ซ่อนตารางทั้งหมด
     tables.style.display = 'none';
     plansDiv.innerHTML = '';
 
-    return;
+    // ซ่อนผล guideline เดิมทั้งหมด
+    document.querySelectorAll('.guideline-highlight-cell').forEach(el=>{
+        el.classList.remove('guideline-highlight-cell');
+    });
+
+    // highlight แถว Major Bleeding
+    const rows = document.querySelectorAll('.guideline-table tbody tr');
+
+    if(rows[7]){
+        rows[7].children[0].classList.add('guideline-highlight-cell');
+        rows[7].children[1].classList.add('guideline-highlight-cell');
+        rows[7].children[2].classList.add('guideline-highlight-cell');
+    }
+
+    return false;
 }
         
        let adj = {
