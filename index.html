@@ -1306,34 +1306,81 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // --- EVENT LISTENERS (เดิม) ---
-  // --- EVENT LISTENERS (เดิม) ---
-document.querySelectorAll('input[name="displayMode"]').forEach(el=>el.addEventListener('change',calculate));
-document.querySelectorAll('input[name="pills"]').forEach(el=>el.addEventListener('change',calculate));
-document.querySelectorAll('input[name="bleed"]').forEach(el=>el.addEventListener('change',calculate));
+ // ==========================================
+// AUTO REALTIME UPDATE
+// ==========================================
 
-/* ⭐ เพิ่มตรงนี้ */
-document.querySelectorAll('input[name="bleed"]').forEach(el=>{
-    el.addEventListener('change', function(){
+// เปลี่ยน Target INR → highlight + calculate ทันที
+document.querySelectorAll('input[name="targetRange"]').forEach(el=>{
+    el.addEventListener('change', ()=>{
         const inr = parseFloat(document.getElementById('inr').value);
         highlightGuidelineByINR(inr);
+        calculate();
     });
 });
 
+// เปลี่ยนชนิดเม็ดยา → calculate ทันที
+document.querySelectorAll('input[name="pills"]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+        calculate();
+    });
+});
 
-   document.getElementById('inr').addEventListener('input', function(e){
+// เปลี่ยนโหมดแสดงผล → calculate ทันที
+document.querySelectorAll('input[name="displayMode"]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+        calculate();
+    });
+});
 
+// เปลี่ยน bleed → highlight + calculate
+document.querySelectorAll('input[name="bleed"]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+        const inr = parseFloat(document.getElementById('inr').value);
+        highlightGuidelineByINR(inr);
+        calculate();
+    });
+});
+
+// พิมพ์ INR → realtime highlight + calculate
+document.getElementById('inr').addEventListener('input', function(e){
     const inr = parseFloat(e.target.value);
-
-    // highlight realtime
     highlightGuidelineByINR(inr);
-
-    // คำนวณตามปกติ
     calculate();
 });
-    document.getElementById('weeklyDose').addEventListener('input',calculate);
-    document.getElementById('days').addEventListener('input',calculate);
 
+// เปลี่ยน weekly dose → calculate realtime
+document.getElementById('weeklyDose').addEventListener('input', ()=>{
+    calculate();
+});
+
+// เปลี่ยนวันนัด → calculate realtime
+document.getElementById('days').addEventListener('input', ()=>{
+    calculate();
+});
+
+// ==========================================
+// AUTO UPDATE FOR STANDALONE CALCULATOR
+// ==========================================
+
+// observe เพิ่ม/ลบ row แล้ว recalculate อัตโนมัติ
+const observer = new MutationObserver(()=>{
+    calculateComparison(false);
+});
+
+document.querySelectorAll('.dose-input-group').forEach(group=>{
+    observer.observe(group,{
+        childList:true,
+        subtree:true
+    });
+});
+
+// realtime input ภายใน standalone calculator
+document.querySelectorAll('.standalone-calculator input').forEach(input=>{
+    input.addEventListener('input', ()=>{
+        calculateComparison(false);
+    });
+});
     // เรียกใช้ calculate() เพื่อแสดงผลเริ่มต้นเมื่อโหลดหน้าเว็บ
     calculate(); 
 });
