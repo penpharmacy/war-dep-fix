@@ -925,14 +925,26 @@ function highlightGuidelineByINR(inr){
             targetRow.children[2].classList.add('guideline-highlight-cell');
         }
 
-       if(targetRow){
+   if(targetRow){
+
+    // highlight เฉพาะช่อง keep ที่เลือก
+    if(targetRow.children[keepCol]){
+        targetRow.children[keepCol].classList.add('guideline-highlight-cell');
+    }
+
+    // highlight ช่องแนวทาง
+    if(targetRow.children[2]){
+        targetRow.children[2].classList.add('guideline-highlight-cell');
+    }
+
     targetRow.scrollIntoView({
         behavior:'smooth',
         block:'center'
-
-        });
-    }
+    });
 }
+
+} // <-- ปิด function highlightGuidelineByINR ตรงนี้ให้ถูก
+
 document.addEventListener('DOMContentLoaded', function() {
     
     // --- FUNTIONS เดิมที่ถูกเรียกใช้โดย Event Listeners (Local) ---
