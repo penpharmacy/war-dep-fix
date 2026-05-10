@@ -1274,16 +1274,7 @@ document.querySelectorAll('input[name="bleed"]').forEach(el=>{
     });
 });
 
-document.getElementById('inr').addEventListener('input', function(e){
 
-    const inr = parseFloat(e.target.value);
-
-    // highlight realtime
-    highlightGuidelineByINR(inr);
-
-    // คำนวณตามปกติ
-    calculate();
-});
    document.getElementById('inr').addEventListener('input', function(e){
 
     const inr = parseFloat(e.target.value);
