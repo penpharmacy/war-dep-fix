@@ -1162,8 +1162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const inr = parseFloat(inrInput.value);
 const weeklyDose = parseFloat(weeklyDoseInput.value);
 const pillChoice = document.querySelector('input[name="pills"]:checked').value;
-const bleed = document.querySelector('input[name="bleed"]:checked')?.value;
-
+const bleed = document.querySelector('input[name="bleed"]:checked')?.value || 'no';
 // 🔴 ย้ายมาไว้ตรงนี้ทันที (ก่อน highlight / logic อื่นทั้งหมด)
 if (bleed === 'yes') {
 
