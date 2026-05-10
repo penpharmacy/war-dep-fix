@@ -1167,14 +1167,22 @@ const bleed = document.querySelector('input[name="bleed"]:checked')?.value || 'n
 // 🔴 ย้ายมาไว้ตรงนี้ทันที (ก่อน highlight / logic อื่นทั้งหมด)
 if (bleed === 'yes') {
 
+    // ล้าง highlight เก่าก่อน
+    document.querySelectorAll('.guideline-highlight-cell').forEach(el=>{
+        el.classList.remove('guideline-highlight-cell');
+    });
+
     const rows = document.querySelectorAll('.guideline-table tbody tr');
 
+    // highlight แถว major bleeding
     if (rows[7]) {
+
         rows[7].children[0].classList.add('guideline-highlight-cell');
         rows[7].children[1].classList.add('guideline-highlight-cell');
         rows[7].children[2].classList.add('guideline-highlight-cell');
     }
 
+    // แสดงข้อความ
     resDiv.innerHTML = `
         <div class="note" style="
             background:#FFEBEE;
@@ -1183,17 +1191,23 @@ if (bleed === 'yes') {
             font-size:16px;
             font-weight:600;
         ">
-            ⚠️ พบภาวะเลือดออก:  
+            ⚠️ พบภาวะเลือดออก<br>
             ให้ Vitamin K1 และพิจารณาการรักษาตามแนวทาง
         </div>
     `;
 
+    // แสดง result box
     resDiv.style.display = 'block';
+
+    // ซ่อนตาราง regimen
     tables.style.display = 'none';
-    tables.hidden = true;
+
+    // ❌ เอาบรรทัดนี้ออก
+    // tables.hidden = true;
+
     plansDiv.innerHTML = '';
 
-    return; // ❗ ต้องออกทันที
+    return;
 }
 
 // ค่อยตรวจ NaN ทีหลัง
