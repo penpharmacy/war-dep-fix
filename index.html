@@ -1347,12 +1347,16 @@ function autoUpdate(){
 
 /* โหลดครั้งแรก */
 autoUpdate();
-});
-    document.getElementById('weeklyDose').addEventListener('input',calculate);
-    document.getElementById('days').addEventListener('input',calculate);
 
-    // เรียกใช้ calculate() เพื่อแสดงผลเริ่มต้นเมื่อโหลดหน้าเว็บ
-    calculate(); 
+/* listener เพิ่มเติม */
+document.getElementById('weeklyDose').addEventListener('input', calculate);
+document.getElementById('days').addEventListener('input', calculate);
+document.getElementById('inr').addEventListener('input', calculate);
+
+/* เรียกครั้งแรก */
+calculate();
+
+
 });
 </script>
 </body>
