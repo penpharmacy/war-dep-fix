@@ -195,22 +195,21 @@ function highlightGuidelineByINR(inr){
 }  
 /* highlight guideline row */
 .guideline-table tr.guideline-highlight td{
-    background: #00C853 !important;
-    color: #fff !important;
-    font-weight: 700;
-    animation: glowPulse 0.9s infinite alternate;
-    transition: all .25s ease;
+    background:#00C853 !important;
+    color:#fff !important;
+    font-weight:700;
+    transition:all .25s ease;
+    animation: glowPulse 1s infinite alternate;
 }
 
-/* glow effect */
-@keyframes glowPulse {
+@keyframes glowPulse{
     from{
-        box-shadow: 0 0 4px rgba(0,200,83,0.3);
+        box-shadow:0 0 4px rgba(0,200,83,.25);
     }
     to{
         box-shadow:
-            0 0 12px rgba(0,200,83,0.7),
-            0 0 24px rgba(0,200,83,0.45);
+            0 0 12px rgba(0,200,83,.8),
+            0 0 24px rgba(0,200,83,.45);
     }
 }
 /* --- COPY PROTECTION STYLES (เดิม) --- */
