@@ -1170,9 +1170,8 @@ document.querySelector('input[name="displayMode"]:checked').value;
 const targetRange =
 document.querySelector('input[name="targetRange"]:checked').value;
         
-        if(isNaN(inr)||isNaN(weeklyDose)) return; 
-        
-   if (bleed === 'yes') {
+  // ถ้ามีเลือดออก ให้แสดงข้อความทันที
+if (bleed === 'yes') {
 
     // ล้าง highlight เดิม
     document.querySelectorAll('.guideline-highlight-cell').forEach(el => {
@@ -1209,12 +1208,13 @@ document.querySelector('input[name="targetRange"]:checked').value;
     tables.style.display = 'none';
     tables.hidden = true;
 
-    // ล้าง plan
     plansDiv.innerHTML = '';
 
-    // หยุดการคำนวณต่อทันที
     return;
 }
+
+// ค่อยตรวจ NaN ทีหลัง
+if(isNaN(inr)||isNaN(weeklyDose)) return;
         
        let adj = {
     minPct:0,
