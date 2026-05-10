@@ -1385,7 +1385,26 @@ if (bleed === 'yes') {
     `;
 }
         if(newRange.note) html += `<p class="note">${newRange.note}</p>`;
-        else html += `<p>ขนาดยาใหม่ต่อสัปดาห์ (mg) : <strong>${newRange.minCalc.toFixed(2)} — ${newRange.maxCalc.toFixed(2)}</strong> (เฉลี่ย ${newRange.avgCalc.toFixed(2)} mg)</p>`;
+       else html += `
+<p>
+    ขนาดยาใหม่ต่อสัปดาห์ (mg) :
+    <strong>
+        ${newRange.minCalc.toFixed(2)} mg
+        (${adj.minPct >= 0 ? '+' : ''}${(adj.minPct*100).toFixed(1)}%)
+        —
+        ${newRange.maxCalc.toFixed(2)} mg
+        (${adj.maxPct >= 0 ? '+' : ''}${(adj.maxPct*100).toFixed(1)}%)
+    </strong>
+</p>
+
+<p>
+    ค่าเฉลี่ย:
+    <strong style="color: var(--main-pink);">
+        ${newRange.avgCalc.toFixed(2)} mg
+        (${adj.avgPct >= 0 ? '+' : ''}${(adj.avgPct*100).toFixed(1)}%)
+    </strong>
+</p>
+`;
      if (bleed !== 'yes') {
     html += `</div>`;
     resDiv.innerHTML = html;
