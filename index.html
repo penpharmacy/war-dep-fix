@@ -1305,31 +1305,48 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+/* =====================================================
+   AUTO REALTIME UPDATE ทุกการคลิก/เปลี่ยนค่า
+===================================================== */
 
-    // --- EVENT LISTENERS (เดิม) ---
-  // --- EVENT LISTENERS (เดิม) ---
-document.querySelectorAll('input[name="displayMode"]').forEach(el=>el.addEventListener('change',calculate));
-document.querySelectorAll('input[name="pills"]').forEach(el=>el.addEventListener('change',calculate));
-document.querySelectorAll('input[name="bleed"]').forEach(el=>el.addEventListener('change',calculate));
+// input number ทุกช่อง
+document.querySelectorAll('input[type="number"]').forEach(el=>{
+    el.addEventListener('input', autoUpdate);
+    el.addEventListener('change', autoUpdate);
+});
 
-/* ⭐ เพิ่มตรงนี้ */
-document.querySelectorAll('input[name="bleed"]').forEach(el=>{
-    el.addEventListener('change', function(){
-        const inr = parseFloat(document.getElementById('inr').value);
-        highlightGuidelineByINR(inr);
+// radio ทุกตัว
+document.querySelectorAll('input[type="radio"]').forEach(el=>{
+    el.addEventListener('change', autoUpdate);
+    el.addEventListener('click', autoUpdate);
+});
+
+// ปุ่มทั้งหมด
+document.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', function(){
+        setTimeout(autoUpdate, 50);
     });
 });
 
+/* ฟังก์ชันรวม */
+function autoUpdate(){
 
-   document.getElementById('inr').addEventListener('input', function(e){
-
-    const inr = parseFloat(e.target.value);
-
-    // highlight realtime
-    highlightGuidelineByINR(inr);
-
-    // คำนวณตามปกติ
+    // calculator หลัก
     calculate();
+
+    // calculator เปรียบเทียบ
+    calculateComparison(false);
+
+    // guideline highlight
+    const inr = parseFloat(document.getElementById('inr').value);
+
+    if(!isNaN(inr)){
+        highlightGuidelineByINR(inr);
+    }
+}
+
+/* โหลดครั้งแรก */
+autoUpdate();
 });
     document.getElementById('weeklyDose').addEventListener('input',calculate);
     document.getElementById('days').addEventListener('input',calculate);
