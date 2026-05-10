@@ -1318,9 +1318,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // --- EVENT LISTENERS (เดิม) ---
-    document.querySelectorAll('input[name="displayMode"]').forEach(el=>el.addEventListener('change',calculate));
-    document.querySelectorAll('input[name="pills"]').forEach(el=>el.addEventListener('change',calculate));
-    document.querySelectorAll('input[name="bleed"]').forEach(el=>el.addEventListener('change',calculate));
+  // --- EVENT LISTENERS (เดิม) ---
+document.querySelectorAll('input[name="displayMode"]').forEach(el=>el.addEventListener('change',calculate));
+document.querySelectorAll('input[name="pills"]').forEach(el=>el.addEventListener('change',calculate));
+document.querySelectorAll('input[name="bleed"]').forEach(el=>el.addEventListener('change',calculate));
+
+/* ⭐ เพิ่มตรงนี้ */
+document.querySelectorAll('input[name="bleed"]').forEach(el=>{
+    el.addEventListener('change', function(){
+        const inr = parseFloat(document.getElementById('inr').value);
+        highlightGuidelineByINR(inr);
+    });
+});
+
+document.getElementById('inr').addEventListener('input', function(e){
+
+    const inr = parseFloat(e.target.value);
+
+    // highlight realtime
+    highlightGuidelineByINR(inr);
+
+    // คำนวณตามปกติ
+    calculate();
+});
    document.getElementById('inr').addEventListener('input', function(e){
 
     const inr = parseFloat(e.target.value);
