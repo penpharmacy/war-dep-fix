@@ -29,7 +29,7 @@
 }
 
 .guideline-table th {
-    background: #EC407A;
+    background: #AD1457;
     color: white;
     padding: 12px 8px;
     border: 1px solid #F8BBD0;
@@ -1151,7 +1151,7 @@ document.addEventListener('DOMContentLoaded', function() {
          const targetRange = document.querySelector('input[name="targetRange"]:checked')?.value || '2-3';
         if (!inrInput || !weeklyDoseInput || !daysInput) return;
 
-        // ตรวจสอบว่าช่องใดช่องหนึ่งว่างเปล่าหรือไม่
+         // ตรวจสอบว่าช่องใดช่องหนึ่งว่างเปล่าหรือไม่
         if (inrInput.value.trim() === '' || weeklyDoseInput.value.trim() === '' || daysInput.value.trim() === '') {
             resDiv.style.display = 'none';
             tables.style.display = 'none';
@@ -1160,56 +1160,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const inr = parseFloat(inrInput.value);
-const weeklyDose = parseFloat(weeklyDoseInput.value);
-const pillChoice = document.querySelector('input[name="pills"]:checked').value;
-const bleed = document.querySelector('input[name="bleed"]:checked')?.value || 'no';
-        console.log("BLEED =", bleed);
-// 🔴 ย้ายมาไว้ตรงนี้ทันที (ก่อน highlight / logic อื่นทั้งหมด)
-if (bleed === 'yes') {
-
-    // ล้าง highlight เก่าก่อน
-    document.querySelectorAll('.guideline-highlight-cell').forEach(el=>{
-        el.classList.remove('guideline-highlight-cell');
-    });
-
-    const rows = document.querySelectorAll('.guideline-table tbody tr');
-
-    // highlight แถว major bleeding
-    if (rows[7]) {
-
-        rows[7].children[0].classList.add('guideline-highlight-cell');
-        rows[7].children[1].classList.add('guideline-highlight-cell');
-        rows[7].children[2].classList.add('guideline-highlight-cell');
-    }
-
-    // แสดงข้อความ
-    resDiv.innerHTML = `
-        <div class="note" style="
-            background:#FFEBEE;
-            border-left:6px solid #E53935;
-            color:#B71C1C;
-            font-size:16px;
-            font-weight:600;
-        ">
-            ⚠️ พบภาวะเลือดออก<br>
-            ให้ Vitamin K1 และพิจารณาการรักษาตามแนวทาง
-        </div>
-    `;
-
-    // แสดง result box
-    resDiv.style.display = 'block';
-
-    // ซ่อนตาราง regimen
-    tables.style.display = 'none';
-
-    // ❌ เอาบรรทัดนี้ออก
-    // tables.hidden = true;
-
-    plansDiv.innerHTML = '';
-
-    return;
-}
-
+        const weeklyDose = parseFloat(weeklyDoseInput.value);
+        const pillChoice = document.querySelector('input[name="pills"]:checked').value;
+        const bleed = document.querySelector('input[name="bleed"]:checked').value;
+        const displayMode = document.querySelector('input[name="displayMode"]:checked').value; 
+        
+        if(isNaN(inr)||isNaN(weeklyDose)) return; 
+        
+        if(bleed==='yes'){
+           resDiv.innerHTML = `<div class="card"><p><strong>คำแนะนำ:</strong> พบภาวะเลือดออก: ให้ Vit K1 และพิจารณาการรักษาเฉียบพลันตามข้อแนะนำทางการแพทย์</p></div>`;
+           resDiv.style.display='block';
+           tables.style.display='none';
+           plansDiv.innerHTML='';
+           return;
+        }
+        
 // ค่อยตรวจ NaN ทีหลัง
 if(isNaN(inr)||isNaN(weeklyDose)) return;
         
@@ -1505,9 +1470,10 @@ document.querySelectorAll('input[name="displayMode"]').forEach(el=>{
 // เปลี่ยน bleed → highlight + calculate
 document.querySelectorAll('input[name="bleed"]').forEach(el=>{
     el.addEventListener('change', ()=>{
+        calculate();
+
         const inr = parseFloat(document.getElementById('inr').value);
         highlightGuidelineByINR(inr);
-        calculate();
     });
 });
 
