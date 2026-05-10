@@ -1148,7 +1148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const resDiv = document.getElementById('results');
         const tables = document.getElementById('tables');
         const plansDiv = document.getElementById('plans');
-        
+         const targetRange = document.querySelector('input[name="targetRange"]:checked')?.value || '2-3';
         if (!inrInput || !weeklyDoseInput || !daysInput) return;
 
         // ตรวจสอบว่าช่องใดช่องหนึ่งว่างเปล่าหรือไม่
