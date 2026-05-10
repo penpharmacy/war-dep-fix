@@ -925,9 +925,11 @@ function highlightGuidelineByINR(inr){
             targetRow.children[2].classList.add('guideline-highlight-cell');
         }
 
-        targetRow.scrollIntoView({
-            behavior:'smooth',
-            block:'center'
+       if(targetRow){
+    targetRow.scrollIntoView({
+        behavior:'smooth',
+        block:'center'
+
         });
     }
 }
